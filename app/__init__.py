@@ -18,7 +18,7 @@ def create_app(setting_module):
     app.config['JWT_SECRET_KEY']='Sup3r_s3gura' #! TODO: ESTO TOCA ACOMODARLO
     # app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
     #! BLUEPRINTS
-    app.register_blueprint(person, url_prefix=f"{prefix}")
-    app.register_blueprint(document_type, url_prefix=f"{prefix}")
-    app.register_blueprint(role, url_prefix=f"{prefix}")
+    app.register_blueprint(person, url_prefix=f"{prefix}/person")
+    app.register_blueprint(document_type, url_prefix=f"{prefix}/document_type")
+    app.register_blueprint(role, url_prefix=f"{prefix}/role")
     return app

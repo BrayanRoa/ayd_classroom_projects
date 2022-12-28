@@ -1,7 +1,6 @@
 class RoleDTO:
-    def __init__(self, id, name) -> None:
-        self.id = id
+    def __init__(self, name) -> None:
         self.name = name
 
     def __str__(self):
-        return {"id": self.id, "name": self.name}
+        return {"name": self.name}

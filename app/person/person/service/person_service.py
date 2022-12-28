@@ -16,15 +16,17 @@ def get_all_person():
     if not data:
         return {"msg": "There are not persons"}, 404
     result = persons_schema.dump(data)
-    return jsonify({"data": result})
+    return jsonify({"data": result}), 200
 
-#* FIXME: ES UNA COPIA DEL DE ARRIBA ⬆️
-def get_teacher():
-    data = db.session.query(PersonEntity).all()
+
+# * FIXME: ES UNA COPIA DEL DE ARRIBA ⬆️
+def get_teachers():
+    data = db.session.query(PersonEntity).filter(PersonEntity.role_id == 1)
     if not data:
         return {"msg": "There are not persons"}, 404
     result = persons_schema.dump(data)
-    return jsonify({"data": result})
+    return jsonify({"data": result}), 200
+
 
 def save_person(data):
     person = None
@@ -38,12 +40,24 @@ def save_person(data):
                 code=person["code"],
                 password=person["password"],
                 document_type_id=person["document_type_id"],
-                role_id=person['role_id']
+                role_id=person["role_id"],
             )
         )
         db.session.commit()
-        return jsonify({"data": person})
+        return jsonify({"data": person}), 201
     except ValidationError as error:
         return jsonify({"error": error.messages}), 400
     except Exception as ex:
-        return jsonify({"MySql":ex.args}), 400
+        return jsonify({"MySql": ex.args}), 400
+
+# TODO: VER COMO HAGO PARA NO MOSTRAR ALGUNOS CAMPOS EN LA RESPUESTA
+def get_person_mail(mail):
+    data = (
+        db.session.query(PersonEntity)
+        .filter(PersonEntity.institutional_mail == mail)
+        .one()
+    )
+    if not data:
+        return {"msg": "There is not person"}, 404
+    result = person_schema.dump(data)
+    return jsonify({"data": result}), 200
