@@ -18,6 +18,13 @@ def get_all_person():
     result = persons_schema.dump(data)
     return jsonify({"data": result})
 
+#* FIXME: ES UNA COPIA DEL DE ARRIBA ⬆️
+def get_teacher():
+    data = db.session.query(PersonEntity).all()
+    if not data:
+        return {"msg": "There are not persons"}, 404
+    result = persons_schema.dump(data)
+    return jsonify({"data": result})
 
 def save_person(data):
     person = None
@@ -31,6 +38,7 @@ def save_person(data):
                 code=person["code"],
                 password=person["password"],
                 document_type_id=person["document_type_id"],
+                role_id=person['role_id']
             )
         )
         db.session.commit()

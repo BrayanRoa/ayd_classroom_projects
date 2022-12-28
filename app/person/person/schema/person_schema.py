@@ -8,6 +8,7 @@ class PersonSchema(ma.Schema):
     lastnames= fields.String()
     code =  unique=fields.String()
     document_type_id = fields.Integer()
+    role_id=fields.Integer()
    
 person_schema=PersonSchema()
 persons_schema=PersonSchema(many=True)
