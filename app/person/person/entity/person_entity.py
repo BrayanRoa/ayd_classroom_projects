@@ -1,5 +1,8 @@
 from app.db import db
 from app.person.document_type.entity.document_type_entity import DocumentTypeEntity
+from sqlalchemy.orm import mapper
+from app.person.person.model.dto.person_dto import PersonDTO
+from app.person.person.model.person import Person
 
 class PersonEntity(db.Model):
     __tablename__='person'
@@ -21,5 +24,8 @@ class PersonEntity(db.Model):
             "code":self.code,
             "role_code":self.role_code,
             "document_type_id":self.document_type_id,
-            # "document_type":self.document_type
         }
+      
+    def start_mapper():
+        # mapper(Person, PersonEntity)
+        mapper(PersonDTO, PersonEntity)
