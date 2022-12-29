@@ -1,6 +1,6 @@
 from app.person.person.entity.person_entity import PersonEntity
 from sqlalchemy.exc import NoResultFound
-
+from flask import jsonify
 class ModelUser:
     
     @classmethod
@@ -15,7 +15,7 @@ class ModelUser:
             if not valid_password:
                 return {'error':'password invalid'}, 404
             else:
-                return {'ok':'Todo ok'}, 200
+                return jsonify(data)
         except NoResultFound:
             return {'error':f'dont exist person with mail {mail}'},404
         except Exception as error:

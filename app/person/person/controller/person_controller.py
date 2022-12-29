@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.person.person.service.person_service import (
     get_all_person,
     save_person,
@@ -9,8 +10,12 @@ from app.person.person.service.person_service import (
 person = Blueprint("person", __name__)
 
 @person.route("/", methods=["GET"])
+@jwt_required()
 def get_all():
-    return get_all_person()
+    try:
+        return get_all_person()
+    except Exception as error:
+        return {'error':error.args}
 
 
 @person.route("/create", methods=["POST"])
