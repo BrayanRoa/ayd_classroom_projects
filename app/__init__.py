@@ -4,7 +4,11 @@ from app.ext import ma, migrate
 from app.person.person.controller.person_controller import person
 from app.person.document_type.controller.document_type_controller import document_type
 from app.person.role.controller.role_controller import role
+from app.auth.controller.auth_controller import auth
 prefix = f"/api/v1"
+
+import pymysql
+pymysql.install_as_MySQLdb()
 
 def create_app(setting_module):
     app = Flask(__name__)
@@ -15,10 +19,9 @@ def create_app(setting_module):
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app,db)
-    app.config['JWT_SECRET_KEY']='Sup3r_s3gura' #! TODO: ESTO TOCA ACOMODARLO
-    # app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
     #! BLUEPRINTS
     app.register_blueprint(person, url_prefix=f"{prefix}/person")
     app.register_blueprint(document_type, url_prefix=f"{prefix}/document_type")
     app.register_blueprint(role, url_prefix=f"{prefix}/role")
+    app.register_blueprint(auth, url_prefix=f"{prefix}/auth")
     return app

@@ -1,8 +1,10 @@
-from flask import Blueprint
+from flask import Blueprint, request
+from app.auth.user.model_user import ModelUser
+from app.db import db
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint("auth", __name__)
 
-# * TODO: REALIZAR EL LOGIN GENERANDO EL TOKEN
-@auth.route('/', methods=['POST'])
+
+@auth.route("/", methods=["POST"])
 def login():
-    pass
+    return ModelUser.login(db, request.json["mail"], request.json["password"])

@@ -5,6 +5,8 @@ from app.person.person.schema.person_schema import person_schema, persons_schema
 from flask import jsonify
 from marshmallow import ValidationError
 from app.person.person.model.dto.person_dto import PersonDTO
+from sqlalchemy.exc import NoResultFound
+from werkzeug.security import generate_password_hash
 
 # ! TODO: 👀 TAMPOCO ESTOY UTILIZANDO EL MODELO PARA NADA
 # ! TODO: ⬇️ PREGUNTARLE A SANTIAGO SOBRE ESTO
@@ -31,6 +33,7 @@ def get_teachers():
 def save_person(data):
     person = None
     try:
+        data['password']=generate_password_hash(data['password'])
         person = person_schema.load(data)
         db.session.add(
             PersonDTO(
@@ -52,12 +55,14 @@ def save_person(data):
 
 # TODO: VER COMO HAGO PARA NO MOSTRAR ALGUNOS CAMPOS EN LA RESPUESTA
 def get_person_mail(mail):
-    data = (
-        db.session.query(PersonEntity)
-        .filter(PersonEntity.institutional_mail == mail)
-        .one()
-    )
-    if not data:
-        return {"msg": "There is not person"}, 404
+    try:
+        data = (
+            db.session.query(PersonEntity)
+            .filter(PersonEntity.institutional_mail == mail)
+            .one()
+        )
+    except NoResultFound:
+        return jsonify({"msg": f'There is not person with email {mail}'}), 404
+    
     result = person_schema.dump(data)
     return jsonify({"data": result}), 200

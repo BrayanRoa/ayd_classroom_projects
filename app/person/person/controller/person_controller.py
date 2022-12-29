@@ -8,8 +8,6 @@ from app.person.person.service.person_service import (
 
 person = Blueprint("person", __name__)
 
-
-
 @person.route("/", methods=["GET"])
 def get_all():
     return get_all_person()
@@ -25,6 +23,6 @@ def create_person():
 def get_all_teachers():
     return get_teachers()
 
-@person.route('/<mail>', methods=['GET'])
+@person.route('/<string:mail>', methods=['GET'])
 def get_person_by_mail(mail):
     return get_person_mail(mail)

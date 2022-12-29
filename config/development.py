@@ -1,3 +1,4 @@
-SQLALCHEMY_DATABASE_URI='mysql://brayan:barl@localhost/python_ayd'
+SQLALCHEMY_DATABASE_URI='mysql://brayan:569641@localhost/python_ayd'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SECRET_KEY = '089ddfc7-3a3a-44be-8855-fefe437de664987eb9a7-294c-4dec-9303-e0f9b7a0da6ee933fd28-5eba-48b5-818f-322d2c020552'
+JWT_SECRET_KEY = '089ddfc7-3a3a-44be-8855-fefe437de664987eb9a7-294c-4dec-9303-e0f9b7a0da6ee933fd28-5eba-48b5-818f-322d2c020552'
+UPLOAD_FOLDER='/home/brayan/Imagenes/WALLPAPERS'
