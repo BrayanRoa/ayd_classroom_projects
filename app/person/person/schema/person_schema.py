@@ -1,14 +1,15 @@
 from app.ext import ma
 from marshmallow import fields, validate
+from marshmallow.exceptions import ValidationError
 
-
+def validate_email(email):
+    if '@ufps.edu.co' not in email:
+        raise ValidationError("It is not a valid institutional email")
+    
 class PersonSchema(ma.Schema):
     institutional_mail = fields.Email(
+        validate=validate_email,
         required=True,
-        error_messages={
-            "required": "Email is mandatory field.",
-            "invalid": "The email is not valid.",
-        },
     )
     password = fields.String(required=True)
     names = fields.String(required=True)
