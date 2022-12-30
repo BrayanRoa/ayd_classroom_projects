@@ -19,6 +19,9 @@ class PersonEntity(db.Model):
     role= db.relationship('RoleEntity', back_populates='person')
     document_type = db.relationship('DocumentTypeEntity', back_populates="person")
     
+    group_person = db.relationship('GroupPersonEntity', back_populates='person')
+    subject_person = db.relationship('SubjectPersonEntity', back_populates='person')
+    
     def __str__(self):
         return {
             "institutional_mail":self.institutional_mail,
