@@ -45,8 +45,8 @@ def create_person():
 def get_all_teachers():
     return get_teachers()
 
-@person.route('/all_person_of_suject/<code>/<group>')
-def get_person_of_subject(code, group):
+@person.route('/all_person_of_suject/<code>/<group>', methods=['GET'])
+def get_persons_of_subject(code, group):
     result = get_all_person_of_subject_and_group(code, group)
     if not result:
         return {"error": f'There are no people in subject'}, 404

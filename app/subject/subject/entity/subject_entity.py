@@ -1,5 +1,6 @@
 from app.db import db
-
+from sqlalchemy.orm import mapper 
+from app.subject.subject.model.suject_dto import SubjectDTO
 class SubjectEntity(db.Model):
     
     __tablename__='subject'
@@ -9,3 +10,6 @@ class SubjectEntity(db.Model):
 
     subject_person = db.relationship('SubjectPersonEntity', back_populates='subject')
     group = db.relationship('GroupEntity', back_populates='subject')
+
+    def start_mapper():
+        mapper(SubjectDTO, SubjectEntity)

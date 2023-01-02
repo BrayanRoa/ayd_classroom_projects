@@ -19,8 +19,8 @@ class PersonSchema(ma.Schema):
     code = unique = fields.String(validate=validate.Length(min=7, max=8))
     document_type_id = fields.Integer(required=True)
     role_id = fields.Integer(required=True)
-    subject_person = fields.Nested('SubjectPersonSchema',many=True)
-    group_person = fields.Nested('GroupPersonSchema', many=True)
+    subject_person = fields.Nested('SubjectPersonSchema',only=('subject_id', 'cancelled'), many=True)
+    group_person = fields.Nested('GroupPersonSchema',only=('group_id', 'cancelled'), many=True)
 
     @post_load
     def slugify_name(self, in_data, **kwargs):

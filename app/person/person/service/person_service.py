@@ -10,9 +10,6 @@ from app.subject.subject.entity.subject_entity import SubjectEntity
 from app.subject.group.entity.group_entity import GroupEntity
 from app.subject.group_person.entity.group_person_entity import GroupPersonEntity
 
-from app.subject.subject_person.schema.subject_person_schema import (
-    subject_person_schema,
-)
 from app.subject.subject_person.model.subject_person_dto import SubjectPersonDTO
 from app.subject.group_person.model.group_person_dto import GroupPersonDTO
 
@@ -78,7 +75,7 @@ def register_person_in_course_and_group(data):
     try:
         info_register = person_subject_group.load(data)
         get_person_mail(data["institutional_mail"])
-        exist_in_subject = get_person_of_seject("one", data)
+        exist_in_subject = get_person_of_subject("one", data)
         if len(exist_in_subject) != 0:
             return {"msg": "the person is already registered in the matter"}
         else:
@@ -104,8 +101,9 @@ def register_person_in_course_and_group(data):
 # * ESTA LISTA LA VERIAN LOS DOCENTES
 def get_all_person_of_subject_and_group(code, code_group):
     try:
+        print(code, code_group)
         option = {"query": "all", "subject_code": code, "group": code_group}
-        person = get_person_of_seject("all", option)
+        person = get_person_of_subject("all", option)
         result = []
         for student, a, b, c, group in person:
             result.append(
@@ -121,7 +119,7 @@ def get_all_person_of_subject_and_group(code, code_group):
         raise NoResultFound(f"There is not person with email")
 
 
-def get_person_of_seject(option, data):
+def get_person_of_subject(option, data):
     if option == "one":
         exist_in_subject = (
             db.session.query(
@@ -171,8 +169,8 @@ def get_person_of_seject(option, data):
             )
             .join(GroupEntity, GroupPersonEntity.group_id == GroupEntity.code)
             .filter(
-                SubjectEntity.code == option["subject_code"],
-                GroupEntity.code == option["group"],
+                SubjectEntity.code == data["subject_code"],
+                GroupEntity.code == data["group"],
             )
             .all()
         )
