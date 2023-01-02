@@ -4,6 +4,6 @@ class UserDTO():
         self.password=password
     
     def __str__(self):
-        return {"email":self.email,"passwrpd":self.password}
+        return {"email":self.email,"password":self.password}
     def __repr__(self):
         return self.__str__()

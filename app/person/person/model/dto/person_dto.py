@@ -1,8 +1,8 @@
 
 class PersonDTO():
-    def __init__(self, institutional_mail,password,names,lastnames,code,document_type_id, role_id):
+    def __init__(self, institutional_mail,names,lastnames,code,document_type_id, role_id):
         self.institutional_mail= institutional_mail
-        self.password = password
+        # self.password = password
         self.names= names
         self.lastnames= lastnames
         self.code =  code
@@ -12,7 +12,7 @@ class PersonDTO():
     def __str__(self):
         return {
             "institutional_mail":self.institutional_mail,
-            "password":self.password,
+            # "password":self.password,
             "names":self.names,
             "lastnames":self.lastnames,
             "code":self.code,

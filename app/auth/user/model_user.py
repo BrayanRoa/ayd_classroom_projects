@@ -1,22 +1,21 @@
 from app.person.person.entity.person_entity import PersonEntity
-from sqlalchemy.exc import NoResultFound
+from app.person.person.schema.person_schema import person_schema
+from sqlalchemy.exc import NoResultFound,DatabaseError
 from flask import jsonify
-class ModelUser:
+class ModelUser():
     
     @classmethod
-    def login(self, db, mail, password):
+    def login(self, db, mail):
         try:
             data = (
                 db.session.query(PersonEntity)
                 .filter(PersonEntity.institutional_mail == mail)
                 .one()
             )
-            valid_password = PersonEntity.check_password(data.password, password)
-            if not valid_password:
-                return {'error':'password invalid'}, 404
-            else:
-                return jsonify(data)
+            # if not PersonEntity.check_password(data.password, password):
+            #     return False
+            # else:
+            return person_schema.dump(data)
         except NoResultFound:
-            return {'error':f'dont exist person with mail {mail}'},404
-        except Exception as error:
-            return {'MySql-Error':error.args}, 400
+            raise NoResultFound(f'dont exist person with mail {mail}')
+
