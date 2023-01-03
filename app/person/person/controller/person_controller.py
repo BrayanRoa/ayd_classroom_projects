@@ -19,7 +19,7 @@ def get_all():
     if not (resp):
         return {"error": f'There are no people'}, 404
     else:
-        return jsonify({"data": resp}), 200
+        return ({"data": resp}), 200
 
 
 @person.route("/<string:mail>", methods=["GET"])
@@ -43,7 +43,11 @@ def create_person():
 
 @person.route("/teachers", methods=["GET"])
 def get_all_teachers():
-    return get_teachers()
+    try:
+        return get_teachers()
+    except Exception as error:
+        return {'error': error.args}, 400
+ 
 
 @person.route('/all_person_of_suject/<code>/<group>', methods=['GET'])
 def get_persons_of_subject(code, group):
@@ -60,4 +64,3 @@ def registerPersonInCourse():
         return register_person_in_course_and_group(data)
     except Exception as error:
         return {'error':error.args}
-        

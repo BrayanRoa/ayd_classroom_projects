@@ -3,8 +3,7 @@ from app.person.document_type.entity.document_type_entity import DocumentTypeEnt
 from app.person.role.entity.role_entity import RoleEntity
 from sqlalchemy.orm import mapper
 from app.person.person.model.dto.person_dto import PersonDTO
-from app.person.person.model.person import Person
-from werkzeug.security import check_password_hash
+
 class PersonEntity(db.Model):
     __tablename__='person'
     

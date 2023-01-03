@@ -11,9 +11,10 @@ class SubjectPersonEntity(db.Model):
     
     institutional_mail = db.Column(db.String(100), db.ForeignKey('person.institutional_mail'))
     person = db.relationship('PersonEntity', back_populates="subject_person")
+    # person = db.relationship('PersonEntity', back_populates="subject_person", primaryjoin='SubjectPersonEntity.institutional_mail == PersonEntity.institutional_mail')
 
     subject_id = db.Column(db.String(8), db.ForeignKey('subject.code'))
-    subject = db.relationship('SubjectEntity', back_populates="subject_person")
+    subject = db.relationship('SubjectEntity', back_populates="subject_person", lazy='select')
     
     
     def start_mapper():

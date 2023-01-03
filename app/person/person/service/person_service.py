@@ -1,4 +1,5 @@
 from app.db import db
+from sqlalchemy import and_, or_
 from flask import jsonify
 from marshmallow import ValidationError
 from sqlalchemy.exc import NoResultFound
@@ -71,10 +72,12 @@ def save_person(data):
         raise Exception(ex.args)
 
 
+# * VALIDAR QUE EXISTA EL GRUPO Y LA MATERIA
 def register_person_in_course_and_group(data):
     try:
         info_register = person_subject_group.load(data)
         get_person_mail(data["institutional_mail"])
+
         exist_in_subject = get_person_of_subject("one", data)
         if len(exist_in_subject) != 0:
             return {"msg": "the person is already registered in the matter"}
@@ -101,45 +104,22 @@ def register_person_in_course_and_group(data):
 # * ESTA LISTA LA VERIAN LOS DOCENTES
 def get_all_person_of_subject_and_group(code, code_group):
     try:
-        print(code, code_group)
         option = {"query": "all", "subject_code": code, "group": code_group}
         person = get_person_of_subject("all", option)
-        result = []
-        for student, a, b, c, group in person:
-            result.append(
-                {
-                    "names": student.names,
-                    "lastnames": student.lastnames,
-                    "mail": student.institutional_mail,
-                    "cancelled": a.cancelled,
-                },
-            )
-        return result
+        return persons_schema.dump(person)
     except NoResultFound:
         raise NoResultFound(f"There is not person with email")
 
 
 def get_person_of_subject(option, data):
+    print(data)
     if option == "one":
         exist_in_subject = (
-            db.session.query(
-                PersonEntity,
-                SubjectPersonEntity,
-                SubjectEntity,
-                GroupPersonEntity,
-                GroupEntity,
-            )
-            .join(
-                SubjectPersonEntity,
-                SubjectPersonEntity.institutional_mail
-                == PersonEntity.institutional_mail,
-            )
-            .join(SubjectEntity, SubjectPersonEntity.subject_id == SubjectEntity.code)
-            .join(
-                GroupPersonEntity,
-                GroupPersonEntity.institutional_mail == PersonEntity.institutional_mail,
-            )
-            .join(GroupEntity, GroupPersonEntity.group_id == GroupEntity.code)
+            db.session.query(PersonEntity)
+            .join(SubjectPersonEntity)
+            .join(SubjectEntity)
+            .join(GroupPersonEntity)
+            .join(GroupEntity)
             .filter(
                 SubjectEntity.code == data["subject_id"],
                 GroupEntity.code == data["group_id"],
@@ -150,28 +130,19 @@ def get_person_of_subject(option, data):
         return exist_in_subject
     else:
         exist_in_subject = (
-            db.session.query(
-                PersonEntity,
-                SubjectPersonEntity,
-                SubjectEntity,
-                GroupPersonEntity,
-                GroupEntity,
-            )
-            .join(
-                SubjectPersonEntity,
-                SubjectPersonEntity.institutional_mail
-                == PersonEntity.institutional_mail,
-            )
-            .join(SubjectEntity, SubjectPersonEntity.subject_id == SubjectEntity.code)
-            .join(
-                GroupPersonEntity,
-                GroupPersonEntity.institutional_mail == PersonEntity.institutional_mail,
-            )
-            .join(GroupEntity, GroupPersonEntity.group_id == GroupEntity.code)
+            db.session.query(PersonEntity)
+            .join(SubjectPersonEntity)
+            .join(SubjectEntity)
+            .join(GroupPersonEntity)
+            .join(GroupEntity)
             .filter(
                 SubjectEntity.code == data["subject_code"],
-                GroupEntity.code == data["group"],
+                GroupEntity.code == data["group_id"],
+                GroupPersonEntity.cancelled == 0,
             )
             .all()
         )
+        print(exist_in_subject)
         return exist_in_subject
+    
+

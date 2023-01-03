@@ -6,6 +6,7 @@ class RolSchema(ma.Schema):
     id=fields.String()
     name= fields.String()
     person=fields.Nested(PersonSchema(only=('names', 'institutional_mail'), many=True))
+    # person = fields.List(fields.Nested(PersonSchema))
     
 role_schema=RolSchema()
 rols_schema=RolSchema(many=True)
