@@ -13,6 +13,7 @@ class GroupEntity(db.Model):
     subject = db.relationship('SubjectEntity', back_populates="group")
     
     persons = db.relationship("PersonEntity", secondary='group_person', lazy='select', viewonly=True)
+    projects = db.relationship('ProjectEntity', back_populates='group')
 
     def __repr__(self) -> str:
         return f'code: {self.code}, name: {self.name}, subject_id: {self.subject_id}'

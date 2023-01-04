@@ -8,6 +8,7 @@ from app.auth.controller.auth_controller import auth
 from app.subject.subject.controller.subject_controller import subject
 from app.subject.group.controller.gruop_controller import group
 from app.subject.group_person.controller.group_person_controller import group_person
+from app.subject.project.controller.project_controller import project
 # from app.subject.subject_person.controller.subject_person_controller import subject_person
 
 prefix = f"/api/v1"
@@ -32,5 +33,6 @@ def create_app(setting_module):
     app.register_blueprint(subject, url_prefix=f"{prefix}/subject")
     app.register_blueprint(group, url_prefix=f"{prefix}/group")
     app.register_blueprint(group_person, url_prefix=f"{prefix}/group_person")
+    app.register_blueprint(project, url_prefix=f"{prefix}/project")
     # app.register_blueprint(subject_person, url_prefix=f"{prefix}/subject_person")
     return app
