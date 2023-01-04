@@ -3,12 +3,12 @@ from sqlalchemy.orm import mapper
 from app.subject.subject.model.suject_dto import SubjectDTO
 class SubjectEntity(db.Model):
     
+    
+    
     __tablename__='subject'
     
-    code=db.Column(db.String(8), primary_key=True)
-    name= db.Column(db.String(30), nullable=False, unique=True)
-
-    subject_person = db.relationship('SubjectPersonEntity', back_populates='subject')
+    code = db.Column(db.String(8), primary_key=True)
+    name = db.Column(db.String(30), nullable=False, unique=True)
     group = db.relationship('GroupEntity', back_populates='subject')
 
     def start_mapper():

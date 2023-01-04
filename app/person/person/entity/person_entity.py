@@ -4,37 +4,36 @@ from app.person.role.entity.role_entity import RoleEntity
 from sqlalchemy.orm import mapper
 from app.person.person.model.dto.person_dto import PersonDTO
 
+# from app.subject.subject_person.entity.subject_person_entity import SubjectPersonEntity
+
 class PersonEntity(db.Model):
     __tablename__='person'
     
     institutional_mail=db.Column(db.String(100), primary_key=True)
-    # password = db.Column(db.String(250), nullable=False)
     names= db.Column(db.String(30), nullable=False)
     lastnames= db.Column(db.String(30), nullable=False)
     code = db.Column(db.String(8), nullable=False, unique=True)
     document_type_id = db.Column(db.Integer, db.ForeignKey('document_type.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    img = db.Column(db.String(255), nullable=True)
     
-    role= db.relationship('RoleEntity', back_populates='person')
     document_type = db.relationship('DocumentTypeEntity', back_populates="person")
-    
-    group_person = db.relationship('GroupPersonEntity', back_populates='person')
-    subject_person = db.relationship('SubjectPersonEntity', back_populates='person')
+    role= db.relationship('RoleEntity', back_populates='person')
+    groups = db.relationship("GroupEntity", primaryjoin="and_(PersonEntity.institutional_mail == GroupPersonEntity.person_id, GroupPersonEntity.cancelled==0)", secondary='group_person', lazy='select')
     
     def __str__(self):
-        return {
+        return str({
             "institutional_mail":self.institutional_mail,
-            # "password":self.password,
             "names":self.names,
             "lastnames":self.lastnames,
             "code":self.code,
-            "role_code":self.role_code,
+            "role_id":self.role_id,
             "document_type_id":self.document_type_id,
-            "role":self.role
-        }
+            "role":self.role,
+            "groups":self.groups
+        })
       
     def start_mapper():
-        # mapper(Person, PersonEntity)
         mapper(PersonDTO, PersonEntity)
         
     # @classmethod #* CON ESTE DECORADOR NO NECESITO INSTANCIAR LA CLASE

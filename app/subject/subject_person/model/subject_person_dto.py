@@ -1,8 +1,9 @@
 
-class SubjectPersonDTO():
+# class SubjectPersonDTO():
     
-    def __init__(self, institutional_mail, subject_id):
-        self.institutional_mail = institutional_mail
-        self.subject_id = subject_id
+#     def __init__(self, person_id, group_id, cancelled):
+#         self.person_id = person_id
+#         self.group_id = group_id
+#         self.cancelled = cancelled
         
     

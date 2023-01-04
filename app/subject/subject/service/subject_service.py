@@ -8,7 +8,11 @@ from app.subject.group.entity.group_entity import GroupEntity
 from app.subject.subject.model.suject_dto import SubjectDTO
 from marshmallow import ValidationError
 from flask import jsonify
-from app.person.person.schema.person_schema import persons_schema
+from app.person.person.schema.person_schema import persons_schema, person_schema
+from sqlalchemy import and_
+from app.subject.group.schema.group_schema import group_schema
+from sqlalchemy.exc import NoResultFound
+
 SubjectEntity.start_mapper()
 
 
@@ -21,24 +25,16 @@ def get_all_subjects():
 def get_all_my_subjects(mail):
     data = (
         db.session.query(PersonEntity)
-        .join(GroupPersonEntity)
-        .join(GroupEntity)
         .filter(PersonEntity.institutional_mail == mail)
-        .all()
+        .first()
     )
-    print(data)
     if not data:
         return {"msg": "You don't have registered subjects yet"}, 404
-    # result = [
-    #     {"subject": group.subject_id, 
-    #      "name_subject": group.subject_id, 
-    #      "group": group.name}
-    #     for person,union, group in data
-    # ]
-    result = persons_schema.dump(data)
+    result = person_schema.dump(data)
     return result
 
 
+# * ✅
 def save_subject(data):
     print(data)
     try:
@@ -50,3 +46,31 @@ def save_subject(data):
         return {"error": error.messages}
     except Exception as error:
         return {"error": error.args}
+
+
+# * ✅
+def get_all_person_of_subject_and_group(subject, code_group):
+    try:
+        exist_subject_ang_group(subject, code_group)
+        data = (
+            db.session.query(GroupEntity)
+            .filter(GroupEntity.code == code_group, GroupEntity.subject_id == subject)
+            .first()
+        )
+        result = group_schema.dump(data)
+        return result
+    except Exception as error:
+        return {"error": error.args}
+
+
+# * ✅
+def exist_subject_ang_group(subject, group):
+    try:
+        data = (
+            db.session.query(GroupEntity)
+            .filter(GroupEntity.code == group, GroupEntity.subject_id == subject)
+            .one()
+        )
+        return data
+    except NoResultFound:
+        raise NoResultFound("check the group or subject")
