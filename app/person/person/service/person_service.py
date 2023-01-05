@@ -68,8 +68,6 @@ def save_person(data):
         raise Exception(ex.args)
 
 
-#! 🛑
-# * VALIDAR QUE EXISTA EL GRUPO Y LA MATERIA
 def register_person_in_course_and_group(data):
     try:
         info_register = person_subject_group.load(data)
@@ -102,15 +100,3 @@ def get_person_of_subject(data):
         if info.code == data["group_id"] and info.subject_id == data["subject_id"]:
             return True
     return False
-    # exist_in_subject = (
-    #     db.session.query(PersonEntity)
-    #     .join(GroupPersonEntity)
-    #     .join(GroupEntity)
-    #     .filter(
-    #         PersonEntity.institutional_mail == data["institutional_mail"],
-    #         GroupEntity.code == data["group_id"],
-    #         GroupEntity.subject_id == data["subject_id"],
-    #     )
-    #     .all()
-    # )
-    # return exist_in_subject

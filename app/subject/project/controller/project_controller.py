@@ -15,3 +15,5 @@ def create():
         return save_project(data)
     except Exception as error:
         return {'error': error.args}
+    
+#* TODO: REGISTRAR PERSONA EN PROYECTO - VALIDAR QUE YA NO ESTE EN UNO DE ESA MATERIA

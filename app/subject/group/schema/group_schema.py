@@ -10,6 +10,9 @@ class GroupSchema(ma.Schema):
     subject_id = fields.String(required=True, validate=validate.Length(min=7, max=8))
     subject = fields.Nested('SubjectSchema', only=('name',))
     persons = fields.Nested('PersonSchema', only=('names', 'lastnames'), many=True)
+    projects = fields.Nested('ProjectSchema', only=('name', 'description', 'active'), many=True)
     
-group_schema = GroupSchema()
-list_group_schema = GroupSchema(many=True)
+#* TODO: ANALIZAR ESTO BIEN
+group_schema = GroupSchema(exclude=('projects',))
+list_group_schema = GroupSchema(many=True, exclude=('projects',))
+list_group_without_persons = GroupSchema(many=True, exclude=('persons',))

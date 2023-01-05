@@ -3,7 +3,7 @@ from flask import jsonify
 from sqlalchemy.exc import NoResultFound
 from marshmallow import ValidationError
 from app.subject.group.entity.group_entity import GroupEntity
-from app.subject.group.schema.group_schema import list_group_schema, group_schema
+from app.subject.group.schema.group_schema import list_group_schema, group_schema, list_group_without_persons
 from app.subject.group.model.group_dto import GroupDTO
 
 GroupEntity.start_mapper()
@@ -42,3 +42,9 @@ def group_of_subject(code, group):
         return list_group_schema.dump(data)
     except NoResultFound:
         return {"error": NoResultFound.args}
+    
+    
+def projects_of_subject():
+    data = db.session.query(GroupEntity).all()
+    result = list_group_without_persons.dump(data)
+    return result

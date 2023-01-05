@@ -12,6 +12,9 @@ class ProjectSchema(ma.Schema):
     state = fields.String() #* A ESTE COLOCARLE UN CONJUNTO DE VALORES PERMITIDOS
     group_id = fields.Integer()
     
+    persons = fields.Nested('PersonSchema', only=('names', 'lastnames'), many=True)
+    group = fields.Nested('GroupSchema', only=('name','subject'))
+    
     @post_load
     def slugify_name(self, in_data, **kwargs):
         in_data["name"] = in_data["name"].lower().strip()

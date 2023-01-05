@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from app.subject.group.service.group_service import (
     get_all_gruops,
-    save_group_of_subject
+    save_group_of_subject,
+    projects_of_subject
     )
 
 group = Blueprint('group', __name__)
@@ -15,3 +16,7 @@ def get_all():
 def register_group():
     data = request.get_json()
     return save_group_of_subject(data)
+
+@group.route('/view_projects_of_subject')
+def view_projects_of_subject():
+    return projects_of_subject()
