@@ -20,7 +20,8 @@ def save_project(data):
             description=project['description'],
             active=False,
             state=project['state'],
-            group_id=project['group_id']
+            group_id=project['group_id'],
+            number_of_students=project['number_of_students']
         ))
         db.session.commit()
         return project

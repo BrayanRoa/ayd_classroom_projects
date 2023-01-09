@@ -15,8 +15,16 @@ def login():
         #     return {'error':'password invalid'}
         # else:
         expires = datetime.timedelta(hours=3)
-        return {
-            "access-token": create_access_token(identity=data['institutional_mail'], expires_delta=expires)
-        }, 200
+        additional_claims = {
+            "role_id": data["role_id"],
+        }
+
+        access_token = create_access_token(
+            identity=data["institutional_mail"],
+            additional_claims=additional_claims,
+            expires_delta=expires,
+        )
+
+        return jsonify({'access_token':access_token})
     except Exception as ex:
-        return jsonify({'error':ex.args})
+        return jsonify({"error": ex.args})

@@ -8,25 +8,25 @@ status_code = {
 
 
 def Ok(data):
-    return {"STATUS": status_code["ok"], "MESSAGE": "Successfull", "data": data}
+    return {"Status": status_code["ok"], "Message": "Successfull", "data": data}
 
 
 def Create(data):
-    return {"status": status_code["create"], "message": "Create", "data": data}
+    return {"Status": status_code["create"], "Message": "Create", "data": data}
 
 
 def Unauthorized(data):
     return {
-        "status": status_code["Unauthorized"],
-        "message": "Unauthorized",
-        "data": data,
+        "Status": status_code["Unauthorized"],
+        "Message": "Unauthorized",
+        "Msg": data,
     }
 
 
 def Not_Found(data):
-    return {"status": 404, "message": "Not Found", "error": data}
+    return {"Status": 404, "Message": "Not Found", "Msg": data}
 
 
 def Internal_server_error(data):
     print(data)
-    return {"status": 500, "message": "Internal Server Error", "data": data}
+    return {"status": 500, "message": "Internal Server Error", "msg": data}

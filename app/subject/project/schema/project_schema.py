@@ -11,6 +11,7 @@ class ProjectSchema(ma.Schema):
     active = fields.Boolean()
     state = fields.String() #* A ESTE COLOCARLE UN CONJUNTO DE VALORES PERMITIDOS
     group_id = fields.Integer()
+    number_of_students = fields.Integer()
     
     persons = fields.Nested('PersonSchema', only=('names', 'lastnames'), many=True)
     group = fields.Nested('GroupSchema', only=('name','subject'))

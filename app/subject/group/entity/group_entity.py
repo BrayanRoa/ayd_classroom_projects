@@ -12,7 +12,7 @@ class GroupEntity(db.Model):
     subject_id = db.Column(db.String(8), db.ForeignKey('subject.code'))
     subject = db.relationship('SubjectEntity', back_populates="group")
     
-    persons = db.relationship("PersonEntity", secondary='group_person', lazy='select', viewonly=True)
+    persons = db.relationship("PersonEntity", secondary='group_person', lazy='joined', viewonly=True)
     projects = db.relationship('ProjectEntity', back_populates='group')
 
     def __repr__(self) -> str:

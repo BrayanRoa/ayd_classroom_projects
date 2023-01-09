@@ -19,7 +19,7 @@ pymysql.install_as_MySQLdb()
 
 def create_app(setting_module):
     app = Flask(__name__)
-    
+
     app.config.from_object(setting_module)
     app.url_map.strict_slashes = False  # *
 

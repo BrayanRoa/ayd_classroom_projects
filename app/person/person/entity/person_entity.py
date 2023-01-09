@@ -25,7 +25,7 @@ class PersonEntity(db.Model):
         "GroupEntity",
         primaryjoin="and_(PersonEntity.institutional_mail == GroupPersonEntity.person_id, GroupPersonEntity.cancelled==0)",
         secondary="group_person",
-        lazy="select",
+        lazy="joined",
     )
     
     projects = db.relationship(

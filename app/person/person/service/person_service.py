@@ -1,14 +1,17 @@
 from app.db import db
-from flask import jsonify
+import json
+from flask import jsonify, Response
 from marshmallow import ValidationError
 from sqlalchemy.exc import NoResultFound
 from app.person.person.entity.person_entity import PersonEntity
 from app.person.person.schema.person_schema import person_schema, persons_schema
 from app.person.person.model.dto.person_dto import PersonDTO
+
 # from app.subject.subject_person.entity.subject_person_entity import SubjectPersonEntity
 from app.subject.group_person.entity.group_person_entity import GroupPersonEntity
 from app.subject.group_person.model.group_person_dto import GroupPersonDTO
 from app.person.person.schema.person_subject_group import person_subject_group
+from sqlalchemy import func
 
 # ! TODO: 👀 TAMPOCO ESTOY UTILIZANDO EL MODELO PARA NADA
 # ! TODO: ⬇️ PREGUNTARLE A SANTIAGO SOBRE ESTO
@@ -18,8 +21,30 @@ GroupPersonEntity.start_mapper()
 
 # * ✅
 def get_all_person():
-    data = db.session.query(PersonEntity).all()
+
+    data = db.session.query(PersonEntity).order_by(PersonEntity.code).all()
     return persons_schema.dump(data)
+    # data = db.session.query(PersonEntity).all()
+    # return persons_schema.dump(data)
+
+    # data = ( #* ESTA FUNCIONA BIEN Y ME HACE UN COUNT
+    #     db.session.query(func.count(PersonEntity.institutional_mail))
+    #     .filter(PersonEntity.img == "")
+    #     .scalar()
+    # )
+    # return data
+
+    # data = ( #* muestra el correo de la persona y la cantidad de grupos que tenga
+    #     db.session.query(
+    #         PersonEntity.institutional_mail, func.count(PersonEntity.groups)
+    #     )
+    #     .group_by(PersonEntity.institutional_mail)
+    #     .all()
+    # )
+    # studenst = [
+    #     {'institutional_mail':email, 'num_groups':groups}
+    # for email, groups in data]
+    # return studenst
 
 
 # * ✅
@@ -37,11 +62,10 @@ def get_person_mail(mail):
 
 # * ✅
 def get_teachers():
-    data = db.session.query(PersonEntity).filter(PersonEntity.role_id == 1)
-    if not data:
-        return {"msg": "There are not persons"}, 404
-    result = persons_schema.dump(data)
-    return jsonify({"data": result}), 200
+    data = db.session.query(PersonEntity).filter(PersonEntity.role_id == 1).all()
+    if len(data) == 0:
+        raise NoResultFound('There are not teachers yet')
+    return persons_schema.dump(data)
 
 
 # * ✅
@@ -78,9 +102,9 @@ def register_person_in_course_and_group(data):
         else:
             db.session.add(
                 GroupPersonDTO(
-                    group_id=info_register['group_id'],
-                    person_id=info_register['person_id'],
-                    cancelleb=False
+                    group_id=info_register["group_id"],
+                    person_id=info_register["person_id"],
+                    cancelleb=False,
                 )
             )
             db.session.commit()
