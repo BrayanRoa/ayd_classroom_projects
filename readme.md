@@ -5,6 +5,7 @@
 
 # Run In Development
 
+1. clone the repository - test from local repository
 
 2. Execute the following commands, test from github!!!:
 ```

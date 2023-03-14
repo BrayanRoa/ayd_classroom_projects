@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 setting_module = os.getenv('APP_SETTINGS_MODULE')
 if not setting_module:
     setting_module = os.environ.get('APP_SETTINGS_MODULE', 'config.development')
-print(setting_module)
+print("saludos")
 app = create_app(setting_module)
 jwt = JWTManager(app)
 
