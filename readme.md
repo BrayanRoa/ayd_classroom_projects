@@ -7,7 +7,7 @@
 
 1. clone the repository
 
-2. Execute
+2. Execute the following commands:
 ```
 export FLASK_APP=entrypoint
 export FLASK_DEBUG=1
